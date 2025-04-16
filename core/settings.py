@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'leaflet',
     'stations',
 ]
 
@@ -127,3 +128,13 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+STATIC_URL = '/static/'
+
+# For development
+STATICFILES_DIRS = [
+    BASE_DIR / "static",  # if you also have a project-level static folder
+]
+
+# For production (collects all static files here)
+STATIC_ROOT = BASE_DIR / "staticfiles"

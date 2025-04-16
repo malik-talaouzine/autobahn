@@ -1,5 +1,11 @@
 # Use the official Python runtime image
 FROM python:3.13  
+
+
+RUN apt-get update
+
+RUN apt-get update &&\
+    apt-get install -y gdal-bin
  
 # Create the app directory
 RUN mkdir /app

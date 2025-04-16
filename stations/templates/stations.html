@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Charging Stations - Map{% endblock %}
+
+{% block content %}
+    {% include 'map.html' %}
+    <script>
+        var stations = [
+            {% for station in stations %}
+            {
+                title: "{{ station.title }}",
+                subtitle: "{{ station.subtitle }}",
+                description: "{{ station.description }}",
+                latitude: {{ station.latitude }},
+                longitude: {{ station.longitude }}
+            }
+            {% if not forloop.last %},{% endif %}
+            {% endfor %}
+        ];
+
+        var baseIconSize = 15; // initial size for icon (when zoom level is 6)
+        var stationIcon = createIcon(baseIconSize); // Create the icon initially
+
+        // Function to create icons with size scaling
+        function createIcon(size) {
+            return L.icon({
+                iconUrl: "{% static 'img/station.png' %}",
+                iconSize: [size, size * 1.33],  // aspect ratio for the icon
+                iconAnchor: [size / 2, size * 1.33],  // where the icon's center is relative to its size
+                popupAnchor: [0, -size]  // where the popup will be located relative to the icon
+            });
+        }
+
+        var markers = [];
+        // Add markers for each station
+        stations.forEach(function(station) {
+            var marker = L.marker([station.latitude, station.longitude], { icon: stationIcon }).addTo(map);
+            var popupText = `<strong>${station.title}</strong><br>${station.subtitle || ''}<br>${station.description || ''}`;
+            marker.bindPopup(popupText);
+            markers.push(marker);
+        });
+
+        // Adjust the icon size on zoom level change
+        map.on('zoomend', function() {
+            var zoom = map.getZoom();
+            var newSize = baseIconSize + (zoom - 6) * 4; // Change icon size based on zoom level
+
+            // Avoid making the icon too small or too large
+            newSize = Math.max(10, Math.min(40, newSize));  // Ensure the icon size is within a reasonable range
+
+            var newIcon = createIcon(newSize);
+
+            markers.forEach(function(marker) {
+                marker.setIcon(newIcon); // Update each marker with the new icon size
+            });
+        });
+    </script>
+{% endblock %}
