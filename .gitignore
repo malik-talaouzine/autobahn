@@ -3,3 +3,4 @@ mysql-config
 .env
 .vscode
 *.Zone.Identifier
+*.ipynb
