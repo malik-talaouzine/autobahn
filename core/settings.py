@@ -133,7 +133,7 @@ STATIC_URL = '/static/'
 
 # For development
 STATICFILES_DIRS = [
-    BASE_DIR / "static",  # if you also have a project-level static folder
+    BASE_DIR / "stations/static",  # if you also have a project-level static folder
 ]
 
 # For production (collects all static files here)

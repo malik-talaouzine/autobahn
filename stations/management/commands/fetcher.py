@@ -1,5 +1,6 @@
 import requests
 
+from tqdm import tqdm
 from stations.models import Station
 from django.core.management.base import BaseCommand, CommandError
 
@@ -12,22 +13,24 @@ class Command(BaseCommand):
 
         data = self.fetch_api("/")
         roads = data["roads"]
-        for road in roads:
+        for road in tqdm(roads, desc="Fetching Progress"):
             data = self.fetch_api(f"/{road}/services/electric_charging_station")
             stations = data["electric_charging_station"]
             for station in stations:
                 station_id = station["identifier"]
                 detail_data = self.fetch_api(f"/details/electric_charging_station/{station_id}")
                 if (descr := detail_data.get("description")) is not None:
-                    descr = " ".join(descr)
+                    descr = " ".join(descr[1:])
                 if (coor := detail_data.get("coordinate")) is not None:
                     lat = coor["lat"]
                     long = coor["long"]
                 else:
                     lat, long = None, None
+                title = detail_data.get("title").split("|")
 
                 Station.objects.create(
-                    title=detail_data.get("title"),
+                    road=road,
+                    area=f"{title[1].strip()} -> {title[2].strip()}" if title is not None and len(title) == 3 else None,
                     subtitle=detail_data.get("subtitle"),
                     latitude=lat,
                     longitude=long,

@@ -9,7 +9,8 @@
         var stations = [
             {% for station in stations %}
             {
-                title: "{{ station.title }}",
+                road: "{{ station.road }}",
+                area: "{{ station.area }}",
                 subtitle: "{{ station.subtitle }}",
                 description: "{{ station.description }}",
                 latitude: {{ station.latitude }},
@@ -36,7 +37,7 @@
         // Add markers for each station
         stations.forEach(function(station) {
             var marker = L.marker([station.latitude, station.longitude], { icon: stationIcon }).addTo(map);
-            var popupText = `<strong>${station.title}</strong><br>${station.subtitle || ''}<br>${station.description || ''}`;
+            var popupText = `<strong>${station.road}</strong><br><br>${station.area || ''}<br><br>${station.subtitle || ''}<br><br>${station.description || ''}`;
             marker.bindPopup(popupText);
             markers.push(marker);
         });
