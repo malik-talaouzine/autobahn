@@ -1,3 +1,5 @@
 .venv
 mysql-config
 .env
+.vscode
+*.Zone.Identifier
