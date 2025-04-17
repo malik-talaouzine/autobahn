@@ -1,6 +1,11 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Charging Stations - Map{% endblock %}
+
+
 {% block head %}
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    
 {% endblock %}
 
 {% block content %}
@@ -15,4 +20,7 @@
             attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         }).addTo(map);
     </script>
+
+    {% include 'stations.html' %}
 {% endblock %}
+    
