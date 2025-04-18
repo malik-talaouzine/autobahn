@@ -1,20 +1,6 @@
 {% load static %}
 
 <script>
-    var stations = [
-        {% for station in stations %}
-        {
-            road: "{{ station.road }}",
-            area: "{{ station.area }}",
-            subtitle: "{{ station.subtitle }}",
-            description: "{{ station.description }}",
-            latitude: {{ station.latitude }},
-            longitude: {{ station.longitude }}
-        }
-        {% if not forloop.last %},{% endif %}
-        {% endfor %}
-    ];
-
     var baseIconSize = 15; // initial size for icon (when zoom level is 6)
     var stationIcon = createStationIcon(baseIconSize); // Create the icon initially
 
@@ -30,12 +16,12 @@
 
     var stationMarkers  = [];
     // Add markers for each station
-    stations.forEach(function(station) {
-        var stationsMarker = L.marker([station.latitude, station.longitude], { icon: stationIcon });
-        var popupText = `<strong>${station.road}</strong><br><br>${station.area || ''}<br><br>${station.subtitle || ''}<br><br>${station.description || ''}`;
+    {% for station in stations %}
+        var stationsMarker = L.marker([{{ station.latitude }}, {{ station.longitude }}], { icon: stationIcon });
+        var popupText = `<strong>{{ station.road|escapejs }}</strong><br><br>{{ station.area|default_if_none:''|escapejs }}<br><br>{{ station.subtitle|default_if_none:''|escapejs }}<br><br>{{ station.description|default_if_none:''|escapejs }}`;
         stationsMarker.bindPopup(popupText);
         stationMarkers.push(stationsMarker);
-    });
+    {% endfor %}
 
     // Adjust the icon size on zoom level change
     map.on('zoomend', function() {

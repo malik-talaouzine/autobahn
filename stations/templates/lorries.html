@@ -1,21 +1,6 @@
 {% load static %}
 
 <script>
-    var lorries = [
-        {% for lorry in lorries %}
-        {
-            road: "{{ lorry.road }}",
-            area: "{{ lorry.area }}",
-            subtitle: "{{ lorry.subtitle }}",
-            latitude: {{ lorry.latitude }},
-            longitude: {{ lorry.longitude }},
-            car_parking_spaces: "{{ lorry.car_parking_spaces  }}",
-            lorry_parking_spaces: "{{ lorry.lorry_parking_spaces  }}"
-        }
-        {% if not forloop.last %},{% endif %}
-        {% endfor %}
-    ];
-
     var baseIconSize = 15; // initial size for icon (when zoom level is 6)
     var lorryIcon = createLorryIcon(baseIconSize); // Create the icon initially
 
@@ -31,12 +16,12 @@
 
     var lorryMarkers  = [];
     // Add markers for each station
-    lorries.forEach(function(lorry) {
-        var lorryMarker = L.marker([lorry.latitude, lorry.longitude], { icon: lorryIcon });
-        var popupText = `<strong>${lorry.road}</strong><br><br>${lorry.area || ''}<br><br>${lorry.subtitle || ''}<br><br>${lorry.car_parking_spaces || ''}<br>${lorry.lorry_parking_spaces || ''}`;
+    {% for lorry in lorries %}
+        var lorryMarker = L.marker([{{ lorry.latitude }}, {{ lorry.longitude }}], { icon: lorryIcon });
+        var popupText = `<strong>{{ lorry.road|default_if_none:''|escapejs }}</strong><br><br>{{ lorry.area|default_if_none:''|escapejs }}<br><br>{{ lorry.subtitle|default_if_none:''|escapejs }}<br><br>{{ lorry.car_parking_spaces|default_if_none:''|escapejs }}<br>{{ lorry.lorry_parking_spaces|default_if_none:''|escapejs }}`;
         lorryMarker.bindPopup(popupText);
         lorryMarkers.push(lorryMarker);
-    });
+    {% endfor %}
 
     // Adjust the icon size on zoom level change
     map.on('zoomend', function() {
