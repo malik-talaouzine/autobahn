@@ -16,10 +16,10 @@
     ];
 
     var baseIconSize = 15; // initial size for icon (when zoom level is 6)
-    var stationIcon = createIcon(baseIconSize); // Create the icon initially
+    var stationIcon = createStationIcon(baseIconSize); // Create the icon initially
 
     // Function to create icons with size scaling
-    function createIcon(size) {
+    function createStationIcon(size) {
         return L.icon({
             iconUrl: "{% static 'img/station.png' %}",
             iconSize: [size, size * 1.33],  // aspect ratio for the icon
@@ -28,13 +28,13 @@
         });
     }
 
-    var markers = [];
+    var stationMarkers  = [];
     // Add markers for each station
     stations.forEach(function(station) {
-        var marker = L.marker([station.latitude, station.longitude], { icon: stationIcon }).addTo(map);
+        var stationsMarker = L.marker([station.latitude, station.longitude], { icon: stationIcon });
         var popupText = `<strong>${station.road}</strong><br><br>${station.area || ''}<br><br>${station.subtitle || ''}<br><br>${station.description || ''}`;
-        marker.bindPopup(popupText);
-        markers.push(marker);
+        stationsMarker.bindPopup(popupText);
+        stationMarkers.push(stationsMarker);
     });
 
     // Adjust the icon size on zoom level change
@@ -47,7 +47,7 @@
 
         var newIcon = createIcon(newSize);
 
-        markers.forEach(function(marker) {
+        stationMarkers.forEach(function(marker) {
             marker.setIcon(newIcon); // Update each marker with the new icon size
         });
     });

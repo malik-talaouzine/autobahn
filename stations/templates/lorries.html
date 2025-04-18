@@ -1,0 +1,55 @@
+{% load static %}
+
+<script>
+    var lorries = [
+        {% for lorry in lorries %}
+        {
+            road: "{{ lorry.road }}",
+            area: "{{ lorry.area }}",
+            subtitle: "{{ lorry.subtitle }}",
+            latitude: {{ lorry.latitude }},
+            longitude: {{ lorry.longitude }},
+            car_parking_spaces: "{{ lorry.car_parking_spaces  }}",
+            lorry_parking_spaces: "{{ lorry.lorry_parking_spaces  }}"
+        }
+        {% if not forloop.last %},{% endif %}
+        {% endfor %}
+    ];
+
+    var baseIconSize = 15; // initial size for icon (when zoom level is 6)
+    var lorryIcon = createLorryIcon(baseIconSize); // Create the icon initially
+
+    // Function to create icons with size scaling
+    function createLorryIcon(size) {
+        return L.icon({
+            iconUrl: "{% static 'img/lorry.png' %}",
+            iconSize: [size, size],  // aspect ratio for the icon
+            iconAnchor: [size / 2, size],  // where the icon's center is relative to its size
+            popupAnchor: [0, -size]  // where the popup will be located relative to the icon
+        });
+    }
+
+    var lorryMarkers  = [];
+    // Add markers for each station
+    lorries.forEach(function(lorry) {
+        var lorryMarker = L.marker([lorry.latitude, lorry.longitude], { icon: lorryIcon });
+        var popupText = `<strong>${lorry.road}</strong><br><br>${lorry.area || ''}<br><br>${lorry.subtitle || ''}<br><br>${lorry.car_parking_spaces || ''}<br>${lorry.lorry_parking_spaces || ''}`;
+        lorryMarker.bindPopup(popupText);
+        lorryMarkers.push(lorryMarker);
+    });
+
+    // Adjust the icon size on zoom level change
+    map.on('zoomend', function() {
+        var zoom = map.getZoom();
+        var newSize = baseIconSize + (zoom - 6) * 4; // Change icon size based on zoom level
+
+        // Avoid making the icon too small or too large
+        newSize = Math.max(10, Math.min(40, newSize));  // Ensure the icon size is within a reasonable range
+
+        var newIcon = createIcon(newSize);
+
+        lorryMarkers .forEach(function(marker) {
+            marker.setIcon(newIcon); // Update each marker with the new icon size
+        });
+    });
+</script>
