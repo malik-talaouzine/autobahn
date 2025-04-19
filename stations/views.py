@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Station, ParkingLorry
+from .models import Station, ParkingLorry, Closure
 
 # Create your views here.
 
@@ -9,4 +9,6 @@ def home(request):
 def map(request):
     stations = Station.objects.all()
     lorries = ParkingLorry.objects.all()
-    return render(request, "map.html", {"stations": stations, "lorries": lorries})
+    closures = Closure.objects.all()
+    print(stations[0].latitude, stations[0].longitude)
+    return render(request, "map.html", {"stations": stations, "lorries": lorries, "closures": closures})

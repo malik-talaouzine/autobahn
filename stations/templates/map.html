@@ -23,6 +23,13 @@
                 <input type="checkbox" id="toggle-lorries">
                 <span class="slider"></span>
             </label>
+        </div>
+        <div class="toggle-item">
+            <span>Closures</span>
+            <label class="switch">
+                <input type="checkbox" id="toggle-closures">
+                <span class="slider"></span>
+            </label>
         </div></div>
     </div>
 
@@ -56,12 +63,23 @@
                 }
             });
         });
+
+        document.getElementById("toggle-closures").addEventListener("change", function () {
+            closureMarkers.forEach(marker => {
+                if (this.checked) {
+                    marker.addTo(map);
+                } else {
+                    map.removeLayer(marker);
+                }
+            });
+        });
     </script>
 
     
 
     {% include 'stations.html' %}
     {% include 'lorries.html' %}
+    {% include 'closures.html'%}
 
     <style>
         .toggle-container {

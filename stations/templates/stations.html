@@ -31,7 +31,7 @@
         // Avoid making the icon too small or too large
         newSize = Math.max(10, Math.min(40, newSize));  // Ensure the icon size is within a reasonable range
 
-        var newIcon = createIcon(newSize);
+        var newIcon = createStationIcon(newSize);
 
         stationMarkers.forEach(function(marker) {
             marker.setIcon(newIcon); // Update each marker with the new icon size

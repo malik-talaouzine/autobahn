@@ -1,7 +1,7 @@
 import requests
 
 from tqdm import tqdm
-from stations.models import Station, ParkingLorry
+from stations.models import Station, ParkingLorry, Closure
 from django.core.management.base import BaseCommand, CommandError
 
 
@@ -11,12 +11,13 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         Station.objects.all().delete()
         ParkingLorry.objects.all().delete()
+        Closure.objects.all().delete()
 
         data_keys = {
-            # "roadworks": self.process_roadwork,
+            # "roadworks": self.process_roadworks,
             "parking_lorry": self.process_lorries,
             # "warning": self.process_warnings,
-            # "closure": self.process_closure,
+            "closure": self.process_closures,
             "electric_charging_station": self.process_stations,
         }
 
@@ -97,4 +98,32 @@ class Command(BaseCommand):
             route_recommendation=detail_data.get("routeRecommendation"),
             footer=detail_data.get("footer"),
             lorry_parking_feature_icons=detail_data.get("lorryParkingFeatureIcons"),
+        )
+
+    def process_closures(self, road, detail_data):
+        if (descr := detail_data.get("description")) is not None:
+            descr = " ".join(descr)
+        if (coor := detail_data.get("coordinate")) is not None:
+            lat = coor["lat"]
+            long = coor["long"]
+        title = detail_data.get("title")[4:].strip()
+        
+
+        Closure.objects.create(
+            road=road,
+            isBlocked=detail_data.get("isBlocked"),
+            future=detail_data.get("future"),
+            startLcPosition=detail_data.get("startLcPosition"),
+            impact=detail_data.get("impact"),
+            display_type=detail_data.get("display_type"),
+            subtitle=detail_data.get("subtitle"),
+            title=title,
+            startTimestamp=detail_data.get("startTimestamp"),
+            latitude=lat,
+            longitude=long,
+            description=descr[:2000],
+            routeRecommendation=detail_data.get("routeRecommendation"),
+            footer=detail_data.get("footer"),
+            lorryParkingFeatureIcons=detail_data.get("lorryParkingFeatureIcons"),
+            geometry=detail_data.get("geometry")["coordinates"],
         )

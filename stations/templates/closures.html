@@ -1,0 +1,19 @@
+{% load static %}
+
+<script>
+    var closureMarkers  = [];
+    {% for closure in closures %}
+        var geo_data = {
+            "type": "Feature",
+            "geometry": {
+                "type": "LineString",
+                "coordinates": {{ closure.geometry }}
+            }
+        };
+
+        var geoLayer = L.geoJSON(geo_data, {style: {color: 'red', weight: 4, opacity: 0.8}});
+        var popupText = `<strong>{{ closure.road|escapejs }}</strong><br><br>{{ closure.subtitle|default_if_none:''|escapejs }}<br><br>{{ closure.description|default_if_none:''|escapejs }}`;
+        geoLayer.bindPopup(popupText);
+        closureMarkers.push(geoLayer);
+    {% endfor %}
+</script>
