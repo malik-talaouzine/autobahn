@@ -24,8 +24,8 @@ An interactive web dashboard that visualizes real-time Autobahn (German highway)
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/autobahn-map.git
-cd autobahn-map
+git clone https://github.com/malik-talaouzine/autobahn.git
+cd autobahn
 ```
 
 ### 2. Create a .env file
@@ -46,9 +46,7 @@ docker-compose up --build
 This will:
 
 Build the Django app container
-
 Start a MySQL database
-
 Serve the map on port 8000
 
 ### 4. Apply Migrations
