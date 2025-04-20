@@ -29,15 +29,19 @@ cd autobahn-map
 ```
 
 ### 2. Create a .env file
+```bash
 DB=db
 USER=root
 PASSWORD=<your-password>
 ROOTPW=<your-root-password>
 PORT=3306
 HOST=mysql-container
+```
 
 ### 3. Start the App
+```bash
 docker-compose up --build
+```
 
 This will:
 
@@ -48,9 +52,11 @@ Start a MySQL database
 Serve the map on port 8000
 
 ### 4. Apply Migrations
+```bash
 docker exec -it django-container bash
 python manage.py makemigrations
 python manage.py migrate
+```
 
 ### 5. Visit the App
 App UI: http://localhost:8000
