@@ -1,0 +1,19 @@
+{% load static %}
+
+<script>
+    var warningMarkers  = [];
+    {% for warning in warnings %}
+        var geo_data = {
+            "type": "Feature",
+            "geometry": {
+                "type": "LineString",
+                "coordinates": {{ warning.geometry }}
+            }
+        };
+
+        var geoLayer = L.geoJSON(geo_data, {style: {color: 'blue', weight: 4, opacity: 0.8}});
+        var popupText = `<strong>{{ warning.road|escapejs }}</strong><br><br>{{ warning.subtitle|default_if_none:''|escapejs }}<br><br>{{ warning.description|default_if_none:''|escapejs }}`;
+        geoLayer.bindPopup(popupText);
+        warningMarkers.push(geoLayer);
+    {% endfor %}
+</script>

@@ -1,0 +1,19 @@
+{% load static %}
+
+<script>
+    var roadworkMarkers  = [];
+    {% for roadwork in roadworks %}
+        var geo_data = {
+            "type": "Feature",
+            "geometry": {
+                "type": "LineString",
+                "coordinates": {{ roadwork.geometry }}
+            }
+        };
+
+        var geoLayer = L.geoJSON(geo_data, {style: {color: 'green', weight: 4, opacity: 0.8}});
+        var popupText = `<strong>{{ roadwork.road|escapejs }}</strong><br><br>{{ roadwork.subtitle|default_if_none:''|escapejs }}<br><br>{{ roadwork.description|default_if_none:''|escapejs }}`;
+        geoLayer.bindPopup(popupText);
+        roadworkMarkers.push(geoLayer);
+    {% endfor %}
+</script>

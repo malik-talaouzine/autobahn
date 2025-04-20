@@ -1,7 +1,7 @@
 import requests
 
 from tqdm import tqdm
-from stations.models import Station, ParkingLorry, Closure
+from stations.models import Station, ParkingLorry, Closure, Warning, Roadwork
 from django.core.management.base import BaseCommand, CommandError
 
 
@@ -12,11 +12,13 @@ class Command(BaseCommand):
         Station.objects.all().delete()
         ParkingLorry.objects.all().delete()
         Closure.objects.all().delete()
+        Warning.objects.all().delete()
+        Roadwork.objects.all().delete()
 
         data_keys = {
-            # "roadworks": self.process_roadworks,
+            "roadworks": self.process_roadworks,
             "parking_lorry": self.process_lorries,
-            # "warning": self.process_warnings,
+            "warning": self.process_warnings,
             "closure": self.process_closures,
             "electric_charging_station": self.process_stations,
         }
@@ -118,6 +120,71 @@ class Command(BaseCommand):
             display_type=detail_data.get("display_type"),
             subtitle=detail_data.get("subtitle"),
             title=title,
+            startTimestamp=detail_data.get("startTimestamp"),
+            latitude=lat,
+            longitude=long,
+            description=descr[:2000],
+            routeRecommendation=detail_data.get("routeRecommendation"),
+            footer=detail_data.get("footer"),
+            lorryParkingFeatureIcons=detail_data.get("lorryParkingFeatureIcons"),
+            geometry=detail_data.get("geometry")["coordinates"],
+        )
+
+
+    def process_warnings(self, road, detail_data):
+        if (descr := detail_data.get("description")) is not None:
+            descr = " ".join(descr)
+        if (coor := detail_data.get("coordinate")) is not None:
+            lat = coor["lat"]
+            long = coor["long"]
+        title = detail_data.get("title").split("|")
+        
+
+        Warning.objects.create(
+            road=road,
+            isBlocked=detail_data.get("isBlocked"),
+            future=detail_data.get("future"),
+            startLcPosition=detail_data.get("startLcPosition"),
+            impact=detail_data.get("impact"),
+            display_type=detail_data.get("display_type"),
+            subtitle=detail_data.get("subtitle"),
+            title=" - ".join(title[1:]),
+            startTimestamp=detail_data.get("startTimestamp"),
+            latitude=lat,
+            longitude=long,
+            description=descr[:2000],
+            routeRecommendation=detail_data.get("routeRecommendation"),
+            footer=detail_data.get("footer"),
+            lorryParkingFeatureIcons=detail_data.get("lorryParkingFeatureIcons"),
+            geometry=detail_data.get("geometry")["coordinates"],
+        )
+
+
+    def process_roadworks(self, road, detail_data):
+        if (descr := detail_data.get("description")) is not None:
+            descr = " ".join(descr)
+        if (coor := detail_data.get("coordinate")) is not None:
+            lat = coor["lat"]
+            long = coor["long"]
+        title_parts = detail_data["title"].split(" ")
+        if "|" in title_parts:
+            pipe_index = title_parts.index("|")
+            title_parts = title_parts[pipe_index + 1:]
+        
+        for idx, part in enumerate(title_parts):
+            if part.isalpha():
+                title_parts = title_parts[idx:]
+                break
+
+        Roadwork.objects.create(
+            road=road,
+            isBlocked=detail_data.get("isBlocked"),
+            future=detail_data.get("future"),
+            startLcPosition=detail_data.get("startLcPosition"),
+            impact=detail_data.get("impact"),
+            display_type=detail_data.get("display_type"),
+            subtitle=detail_data.get("subtitle"),
+            title=" ".join(title_parts),
             startTimestamp=detail_data.get("startTimestamp"),
             latitude=lat,
             longitude=long,
