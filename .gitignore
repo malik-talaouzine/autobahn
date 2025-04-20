@@ -1,5 +1,3 @@
 .venv
-mysql-config
 .env
-.vscode
 *.ipynb

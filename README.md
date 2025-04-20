@@ -2,7 +2,7 @@
 
 An interactive web dashboard that visualizes real-time Autobahn (German highway) data on a map. It fetches information from [autobahn.api.bund.dev](https://autobahn.api.bund.dev/) and stores it in a MySQL database. Data includes service stations, lorry parking, closures, warnings, and roadworks — all shown on a Leaflet.js map.
 
-You can **click on any element** displayed on the map (such as service stations, lorry parking, closures, etc.) to get more information about it!
+You can **click on any element** displayed on the map (such as electric charging stations, lorry parking, closures, etc.) to get more information about it!
 
 ---
 
@@ -10,7 +10,7 @@ You can **click on any element** displayed on the map (such as service stations,
 
 - 🗺️ Interactive Leaflet map using OpenStreetMap tiles
 - ✅ Toggleable data layers:
-  - 🚉 Service Stations
+  - 🚉 Electric Charging Stations
   - 🚛 Lorry Parking
   - 🚧 Road Closures
   - ⚠️ Traffic Warnings
@@ -49,13 +49,13 @@ docker-compose up --build
 
 This will:
 
-Build the Django app container
+- Build the Django app container
 
-Start a MySQL database
+- Start a MySQL database
 
-Apply the migrations
+- Apply the migrations
 
-Serve the map on port 8000
+- Serve the map on port 8000
 
 ### 4. Visit the App
 App UI: http://localhost:8000
