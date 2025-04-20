@@ -1,77 +1,80 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Autobahn - Map{% endblock %}
-
+{% block title %}Autobahn Map Viewer - Map{% endblock %}
 
 {% block head %}
-    
+<link rel="stylesheet" href="{% static 'css/styles.css' %}">
+
 {% endblock %}
 
 {% block content %}
-    <div class="toggle-container">
-        <div class="toggle-item">
-            <span>E Charging Stations</span>
-            <label class="switch">
-                <input type="checkbox" id="toggle-stations">
-                <span class="slider"></span>
-            </label>
+    <div class="page-wrapper">
+        <div class="toggle-container">
+            <div class="toggle-item">
+                <span>E Charging Stations</span>
+                <label class="switch">
+                    <input type="checkbox" id="toggle-stations">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div class="toggle-item">
+                <span>Parking Lorries</span>
+                <label class="switch">
+                    <input type="checkbox" id="toggle-lorries">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div class="toggle-item">
+                <span>Closures</span>
+                <label class="switch">
+                    <input type="checkbox" id="toggle-closures">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div class="toggle-item">
+                <span>Warnings</span>
+                <label class="switch">
+                    <input type="checkbox" id="toggle-warnings">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div class="toggle-item">
+                <span>Roadworks</span>
+                <label class="switch">
+                    <input type="checkbox" id="toggle-roadworks">
+                    <span class="slider"></span>
+                </label>
+            </div>
         </div>
-        <div class="toggle-item">
-            <span>Parking Lorries</span>
-            <label class="switch">
-                <input type="checkbox" id="toggle-lorries">
-                <span class="slider"></span>
-            </label>
+
+        <div class="map-legend">
+            <h4>Legend</h4>
+            <div class="legend-item">
+                <img src="{% static 'img/station.png' %}" alt="Station Icon">
+                <span>Electric Charging Stations</span>
+            </div>
+            <div class="legend-item">
+                <img src="{% static 'img/lorry.png' %}" alt="Lorry Icon">
+                <span>Parking Lorries</span>
+            </div>
+            <div class="legend-item">
+                <span class="legend-line" style="background-color: red;"></span>
+                <span>Closures</span>
+            </div>
+            <div class="legend-item">
+                <span class="legend-line" style="background-color: blue;"></span>
+                <span>Warnings</span>
+            </div>
+            <div class="legend-item">
+                <span class="legend-line" style="background-color: green;"></span>
+                <span>Roadworks</span>
+            </div>
         </div>
-        <div class="toggle-item">
-            <span>Closures</span>
-            <label class="switch">
-                <input type="checkbox" id="toggle-closures">
-                <span class="slider"></span>
-            </label>
-        </div>
-        <div class="toggle-item">
-            <span>Warnings</span>
-            <label class="switch">
-                <input type="checkbox" id="toggle-warnings">
-                <span class="slider"></span>
-            </label>
-        </div>
-        <div class="toggle-item">
-            <span>Roadworks</span>
-            <label class="switch">
-                <input type="checkbox" id="toggle-roadworks">
-                <span class="slider"></span>
-            </label>
-        </div></div>
+
+        <div id="map" class="map-container"></div>
     </div>
 
-    <div class="map-legend">
-        <h4>Legend</h4>
-        <div class="legend-item">
-            <img src="{% static 'img/station.png' %}" alt="Station Icon">
-            <span>Electric Charging Stations</span>
-        </div>
-        <div class="legend-item">
-            <img src="{% static 'img/lorry.png' %}" alt="Lorry Icon">
-            <span>Parking Lorries</span>
-        </div>
-        <div class="legend-item">
-            <span class="legend-line" style="background-color: red;"></span>
-            <span>Closures</span>
-        </div>
-        <div class="legend-item">
-            <span class="legend-line" style="background-color: blue;"></span>
-            <span>Warnings</span>
-        </div>
-        <div class="legend-item">
-            <span class="legend-line" style="background-color: green;"></span>
-            <span>Roadworks</span>
-        </div>
-    </div>
-
-    <div id="map" style="height: 90vh; width: 100%;"></div>
 
     <script>
         var map = L.map('map').setView([51.1657, 10.4515], 6); // Centered on Germany
@@ -140,118 +143,6 @@
     {% include 'closures.html' %}
     {% include 'warnings.html' %}
     {% include 'roadworks.html' %}
-
-    <style>
-        .toggle-container {
-            position: fixed;
-            right: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            z-index: 1000;
-            background: rgba(255, 255, 255, 0.9);
-            padding: 20px 30px;
-            border-radius: 10px 0 0 10px;
-            box-shadow: -2px 0 10px rgba(0,0,0,0.2);
-            width: 250px; /* 👈 this controls the width */
-        }
-
-        .toggle-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-family: sans-serif;
-            font-size: 16px;
-        }
-
-
-        .switch {
-            position: relative;
-            display: inline-block;
-            width: 50px;
-            height: 28px;
-        }
-
-        .switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            background-color: #ccc;
-            border-radius: 34px;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            transition: 0.4s;
-        }
-
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 20px;
-            width: 20px;
-            left: 4px;
-            bottom: 4px;
-            background-color: white;
-            border-radius: 50%;
-            transition: 0.4s;
-        }
-
-        input:checked + .slider {
-            background-color: #4CAF50;
-        }
-
-        input:checked + .slider:before {
-            transform: translateX(22px);
-        }
-
-        .map-legend {
-            position: fixed;
-            left: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(255, 255, 255, 0.95);
-            padding: 16px 20px;
-            border-radius: 0 10px 10px 0;
-            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
-            font-family: sans-serif;
-            font-size: 14px;
-            z-index: 1000;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .map-legend h4 {
-            margin: 0 0 10px 0;
-            font-size: 16px;
-        }
-
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .legend-item img {
-            width: 20px;
-            height: 20px;
-        }
-
-        .legend-line {
-            width: 20px;
-            height: 4px;
-            background-color: red;
-            border-radius: 2px;
-        }
-</style>
 
 {% endblock %}
     

@@ -1,3 +1,54 @@
 {% extends "base.html" %}
-{% block title %} Home Page {% endblock %}
-{% block content %}<p>this is the home page</p>{% endblock %}
+{% load static %}
+
+{% block title %}
+    Autobahn Map Viewer - Home
+{% endblock %}
+
+{% block head %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="page-wrapper">
+        <header>
+            <div class="container">
+                <h1>Welcome to the Autobahn Map Viewer</h1>
+                <p>Your go-to tool for exploring real-time Autobahn data in Germany. Navigate with ease and stay updated on key road conditions.</p>
+            </div>
+        </header>
+
+        <section class="intro container">
+            <h2>What is the Autobahn Map Viewer?</h2>
+            <p>The Autobahn Map Viewer is a dynamic web-based dashboard that provides up-to-date information on Germany’s Autobahn network. It’s designed for travelers, truck drivers, and anyone interested in real-time road conditions. From service stations to road closures, this interactive tool gives you everything you need to make informed decisions while on the road.</p>
+        </section>
+
+        <section class="key-features container">
+            <h2>Key Features</h2>
+            <ul>
+                <li><strong>Interactive Map</strong>: Explore the Autobahn network on an interactive map powered by Leaflet.js and OpenStreetMap. Zoom in, zoom out, and focus on specific regions with ease.</li>
+                <li><strong>Real-Time Data</strong>: Get live updates on service stations, lorry parking, closures, warnings, and roadworks. Stay informed about traffic disruptions and essential facilities.</li>
+                <li><strong>Customizable Map View</strong>: Toggle different data layers on and off, allowing you to focus on the information most relevant to your trip.</li>
+                <li><strong>Clickable Markers</strong>: Interact with map markers for detailed information about each location, such as the status of service stations, closures, and more.</li>
+                <li><strong>Legend & Map Key</strong>: Easily understand what each icon and color on the map represents with a clear and concise legend.</li>
+            </ul>
+        </section>
+
+        <section class="stay-informed container">
+            <h2>Stay Informed</h2>
+            <p>Planning a trip or navigating through heavy traffic? The Autobahn Map Viewer is your ultimate companion for navigating Germany’s Autobahn network. With real-time data at your fingertips, you can quickly adjust your travel plans based on current road conditions and make your journey safer and more efficient.</p>
+            <p><span class="highlight">Start exploring now and make your journeys smoother and more informed!</span></p>
+            <a href="/map" class="cta">Explore the Map</a>
+        </section>
+
+        <section class="github-link">
+            <p>Check out the project on <a href="https://github.com/malik-talaouzine/autobahn" target="_blank">GitHub</a> for more details and source code!</p>
+        </section>
+
+        <footer>
+            <p>&copy; 2025 Autobahn Map Viewer | All Rights Reserved</p>
+        </footer>
+    </div>
+{% endblock %}

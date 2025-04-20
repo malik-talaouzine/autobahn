@@ -1,0 +1,263 @@
+/* styles.css */
+
+/* ================================================
+   General Styles for Both Pages (Home & Map)
+================================================= */
+
+/* Wrapper for the entire page */
+.page-wrapper {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #00bfff, #ff6347);
+    color: #000000; /* Set default text color to black */
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    align-items: center; /* Center content horizontally */
+}
+
+/* Ensuring content starts below the navbar */
+.container {
+    width: 80%; /* Adjust container width */
+    max-width: 1200px; /* Optional: max width for large screens */
+    margin: 56px auto 0 auto; /* Center the container and leave space for the navbar */
+    padding: 20px;
+}
+
+/* Header styles */
+h1, h2 {
+    color: #000000; /* Ensure headers have black text */
+    text-align: center;
+}
+
+h1 {
+    font-size: 40px;
+    margin-top: 40px;
+}
+
+h2 {
+    font-size: 32px;
+    margin-bottom: 20px;
+}
+
+p {
+    font-size: 18px;
+    line-height: 1.6;
+    text-align: center;
+    color: #000000; /* Set paragraph text to black */
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.key-features li {
+    font-size: 18px;
+    margin-bottom: 15px;
+    color: #000000; /* Set list items to black */
+}
+
+/* White containers */
+.intro, .key-features, .stay-informed {
+    background-color: white;
+    border-radius: 12px;
+    padding: 25px;
+    margin: 20px 0;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    width: 100%; /* Ensure full width inside container */
+}
+
+.key-features ul {
+    padding-left: 20px;
+}
+
+.key-features li::before {
+    content: "✔️";
+    padding-right: 10px;
+    color: #2ecc71; /* Green check marks */
+}
+
+.intro p, .stay-informed p {
+    font-size: 18px;
+}
+
+.stay-informed {
+    background-color: #f1f8fc;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    background-color: #2c3e50;
+    color: white;
+    padding: 10px 0;
+    width: 100%;
+    margin-top: auto; /* Push footer to the bottom */
+}
+
+.highlight {
+    color: #e74c3c; /* Red highlight text */
+    font-weight: bold;
+}
+
+.cta {
+    display: block;
+    text-align: center;
+    background-color: #3498db;
+    color: white;
+    padding: 12px 25px;
+    text-decoration: none;
+    font-size: 20px;
+    border-radius: 8px;
+    margin-top: 20px;
+}
+
+.cta:hover {
+    background-color: #2980b9;
+}
+
+/* GitHub Link (Visible on both pages) */
+.github-link {
+    display: block;
+    text-align: center;
+    margin-top: 20px;
+    font-size: 18px;
+    color: #2ecc71; /* GitHub link in green */
+    font-weight: bold;
+}
+
+.github-link a {
+    text-decoration: none;
+    color:rgb(128, 46, 204) !important;
+}
+
+.github-link a:hover {
+    text-decoration: underline;
+}
+
+
+/* ================================================
+   Map Page Specific Styles
+================================================= */
+
+/* Map container specific styles */
+.map-container {
+    height: calc(100vh - 56px); /* Adjusts the height to fit the screen minus navbar */
+    width: 80vw; /* 80% of the viewport width */
+    margin: 0 auto; /* Centers the map horizontally */
+}
+
+/* Map controls container */
+.toggle-container {
+    position: fixed;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    z-index: 1000;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 20px 30px;
+    border-radius: 10px 0 0 10px;
+    box-shadow: -2px 0 10px rgba(0,0,0,0.2);
+    width: 250px; /* Controls the width of the container */
+}
+
+/* Toggle switch item */
+.toggle-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: sans-serif;
+    font-size: 16px;
+}
+
+/* Switch styles */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 28px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    background-color: #ccc;
+    border-radius: 34px;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    transition: 0.4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    border-radius: 50%;
+    transition: 0.4s;
+}
+
+input:checked + .slider {
+    background-color: #4CAF50;
+}
+
+input:checked + .slider:before {
+    transform: translateX(22px);
+}
+
+/* Map legend styles */
+.map-legend {
+    position: fixed;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.95);
+    padding: 16px 20px;
+    border-radius: 0 10px 10px 0;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
+    font-family: sans-serif;
+    font-size: 14px;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.map-legend h4 {
+    margin: 0 0 10px 0;
+    font-size: 16px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.legend-item img {
+    width: 20px;
+    height: 20px;
+}
+
+.legend-line {
+    width: 20px;
+    height: 4px;
+    background-color: red;
+    border-radius: 2px;
+}
