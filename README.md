@@ -50,11 +50,8 @@ docker-compose up --build
 This will:
 
 - Build the Django app container
-
 - Start a MySQL database
-
 - Apply the migrations
-
 - Serve the map on port 8000
 
 ### 4. Visit the App
