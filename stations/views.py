@@ -12,4 +12,10 @@ def map(request):
     closures = Closure.objects.all()
     warnings = Warning.objects.all()
     roadworks = Roadwork.objects.all()
-    return render(request, "map.html", {"stations": stations, "lorries": lorries, "closures": closures, "warnings": warnings, "roadworks": roadworks})
+    return render(request, "map.html", {
+        "stations": stations,
+        "lorries": lorries,
+        "closures": closures,
+        "warnings": warnings,
+        "roadworks": roadworks
+    })

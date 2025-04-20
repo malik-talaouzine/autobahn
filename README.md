@@ -2,6 +2,8 @@
 
 An interactive web dashboard that visualizes real-time Autobahn (German highway) data on a map. It fetches information from [autobahn.api.bund.dev](https://autobahn.api.bund.dev/) and stores it in a MySQL database. Data includes service stations, lorry parking, closures, warnings, and roadworks — all shown on a Leaflet.js map.
 
+You can **click on any element** displayed on the map (such as service stations, lorry parking, closures, etc.) to get more information about it!
+
 ---
 
 ## 🌟 Features
@@ -16,6 +18,7 @@ An interactive web dashboard that visualizes real-time Autobahn (German highway)
 - 🔄 Periodic data fetching and DB sync
 - 💾 Data persistence in MySQL
 - 🧩 Modular Django templates and static assets
+- 🔍 **Click on any map element** to view detailed information about it
 
 ---
 
@@ -26,6 +29,7 @@ An interactive web dashboard that visualizes real-time Autobahn (German highway)
 ```bash
 git clone https://github.com/malik-talaouzine/autobahn.git
 cd autobahn
+
 ```
 
 ### 2. Create a .env file
@@ -47,15 +51,9 @@ This will:
 
 Build the Django app container
 Start a MySQL database
+Apply the migrations
 Serve the map on port 8000
 
-### 4. Apply Migrations
-```bash
-docker exec -it django-container bash
-python manage.py makemigrations
-python manage.py migrate
-```
-
-### 5. Visit the App
+### 4. Visit the App
 App UI: http://localhost:8000
 
