@@ -12,10 +12,18 @@ def map(request):
     closures = Closure.objects.all()
     warnings = Warning.objects.all()
     roadworks = Roadwork.objects.all()
+    data_exists = (
+        Station.objects.exists() or
+        ParkingLorry.objects.exists() or
+        Closure.objects.exists() or
+        Warning.objects.exists() or
+        Roadwork.objects.exists()
+    )
     return render(request, "map.html", {
         "stations": stations,
         "lorries": lorries,
         "closures": closures,
         "warnings": warnings,
-        "roadworks": roadworks
+        "roadworks": roadworks,
+        "data_exists": data_exists,
     })

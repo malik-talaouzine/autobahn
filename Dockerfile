@@ -1,11 +1,11 @@
 # Use the official Python runtime image
-FROM python:3.13  
+FROM python:3.12 
 
 
 RUN apt-get update
 
 RUN apt-get update &&\
-    apt-get install -y gdal-bin
+    apt-get install -y gdal-bin supervisor
  
 # Create the app directory
 RUN mkdir /app
@@ -35,4 +35,4 @@ COPY . /app/
 EXPOSE 8000
  
 # Run Django’s development server
-CMD ["sh", "-c", "python manage.py makemigrations && python manage.py migrate && python manage.py fetcher && python manage.py runserver 0.0.0.0:8000"]
+CMD ["supervisord", "-c", "/app/supervisord.conf"]

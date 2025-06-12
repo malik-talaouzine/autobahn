@@ -9,6 +9,12 @@
 {% endblock %}
 
 {% block content %}
+    {% if not data_exists %}
+    <div id="data-warning" class="warning-message">
+        Loading... If this is your first time starting the project, it may take a few minutes for data to appear in the interactive map!
+    </div>
+    {% endif %}
+
     <div class="page-wrapper">
         <div class="toggle-container">
             <div class="toggle-item">
@@ -135,6 +141,23 @@
             });
         });
     </script>
+
+
+    <style>
+        .warning-message {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: yellow;
+            color: black;
+            padding: 10px 15px;
+            font-weight: bold;
+            text-align: center;
+            border: 1px solid black;
+            z-index: 1000; /* Ensures it stays on top */
+        }
+    </style>
 
     
 

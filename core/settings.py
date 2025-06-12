@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'leaflet',
     'stations',
+    'django_celery_beat',
 ]
 
 MIDDLEWARE = [
@@ -133,8 +134,20 @@ STATIC_URL = '/static/'
 
 # For development
 STATICFILES_DIRS = [
-    BASE_DIR / "stations/static",  # if you also have a project-level static folder
+    BASE_DIR / "stations/static",
 ]
 
 # For production (collects all static files here)
 STATIC_ROOT = BASE_DIR / "staticfiles"
+
+CELERY_WORKER_STATE_DB = "/tmp/celery-worker.state"
+CELERY_BEAT_SCHEDULE_FILENAME = "/tmp/celerybeat-schedule"
+
+CELERY_BROKER_URL = 'redis://redis:6379/0'
+
+CELERY_BEAT_SCHEDULE = {
+    'run-fetcher-every-1-hour': {
+        'task': 'stations.tasks.run_fetcher',
+        'schedule': 3600.0,  # every hour
+    },
+}

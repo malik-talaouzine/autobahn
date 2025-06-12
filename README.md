@@ -52,8 +52,10 @@ This will:
 - Build the Django app container
 - Start a MySQL database
 - Apply the migrations
+- Update the data
 - Serve the map on port 8000
 
 ### 4. Visit the App
+If this is your first time starting the project it will take a few minutes before you can use the interactive map!
 App UI: http://localhost:8000
 

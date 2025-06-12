@@ -7,14 +7,11 @@ from django.core.management.base import BaseCommand, CommandError
 
 class Command(BaseCommand):
     help = "Fetches loading stations data."
+    def __init__(self):
+        super().__init__()
+        self.items = {}
 
     def handle(self, *args, **options):
-        Station.objects.all().delete()
-        ParkingLorry.objects.all().delete()
-        Closure.objects.all().delete()
-        Warning.objects.all().delete()
-        Roadwork.objects.all().delete()
-
         data_keys = {
             "roadworks": self.process_roadworks,
             "parking_lorry": self.process_lorries,
@@ -22,13 +19,36 @@ class Command(BaseCommand):
             "closure": self.process_closures,
             "electric_charging_station": self.process_stations,
         }
+        
+        for key in data_keys.keys():
+            self.items[key] = []
 
-        data = self.fetch_api("/")
-        roads = data["roads"]
-        for road in tqdm(roads, desc="Fetching Progress"):
-            for k, v in data_keys.items():
-                self.get_data(road, k, v)
-        self.stdout.write(self.style.SUCCESS("Fetched and saved successfully."))
+        try:
+            data = self.fetch_api("/")
+            roads = data["roads"]
+            for road in tqdm(roads, desc="Fetching Progress"):
+                for k, v in data_keys.items():
+                    try:
+                        self.get_data(road, k, v)
+                    except  Exception:
+                        ...
+
+            models = [
+                Roadwork,
+                ParkingLorry,
+                Warning,
+                Closure,
+                Station,              
+            ]
+            for key, model in zip(data_keys.keys(), models):
+                model.objects.all().delete()
+                model.objects.bulk_create(self.items[key])
+
+            self.stdout.write(self.style.SUCCESS("Fetched and saved successfully."))
+
+        except Exception as e:
+            self.stdout.write(self.style.SUCCESS(f"Fetching failed: {e}"))
+
 
     def fetch_api(self, endpoint):
         try:
@@ -57,7 +77,7 @@ class Command(BaseCommand):
             lat, long = None, None
         title = detail_data.get("title").split("|")
 
-        Station.objects.create(
+        self.items["electric_charging_station"].append(Station(
             road=road,
             area=f"{title[1].strip()} -> {title[2].strip()}" if title is not None and len(title) == 3 else None,
             subtitle=detail_data.get("subtitle"),
@@ -73,7 +93,7 @@ class Command(BaseCommand):
             lorry_parking_feature_icons=detail_data.get("lorryParkingFeatureIcons"),
             point=detail_data.get("point"),
             route_recommendation=detail_data.get("routeRecommendation"),
-        )
+        ))
 
     def process_lorries(self, road, detail_data):
         if (descr := detail_data.get("description")) is not None:
@@ -83,7 +103,7 @@ class Command(BaseCommand):
             long = coor["long"]
         title = detail_data.get("title").split("|")
         
-        ParkingLorry.objects.create(
+        self.items["parking_lorry"].append(ParkingLorry(
             road=road,
             area=title[1].strip(),
             car_parking_spaces=car,
@@ -100,7 +120,7 @@ class Command(BaseCommand):
             route_recommendation=detail_data.get("routeRecommendation"),
             footer=detail_data.get("footer"),
             lorry_parking_feature_icons=detail_data.get("lorryParkingFeatureIcons"),
-        )
+        ))
 
     def process_closures(self, road, detail_data):
         if (descr := detail_data.get("description")) is not None:
@@ -111,7 +131,7 @@ class Command(BaseCommand):
         title = detail_data.get("title")[4:].strip()
         
 
-        Closure.objects.create(
+        self.items["closure"].append(Closure(
             road=road,
             isBlocked=detail_data.get("isBlocked"),
             future=detail_data.get("future"),
@@ -128,7 +148,7 @@ class Command(BaseCommand):
             footer=detail_data.get("footer"),
             lorryParkingFeatureIcons=detail_data.get("lorryParkingFeatureIcons"),
             geometry=detail_data.get("geometry")["coordinates"],
-        )
+        ))
 
 
     def process_warnings(self, road, detail_data):
@@ -140,7 +160,7 @@ class Command(BaseCommand):
         title = detail_data.get("title").split("|")
         
 
-        Warning.objects.create(
+        self.items["warning"].append(Warning(
             road=road,
             isBlocked=detail_data.get("isBlocked"),
             future=detail_data.get("future"),
@@ -157,7 +177,7 @@ class Command(BaseCommand):
             footer=detail_data.get("footer"),
             lorryParkingFeatureIcons=detail_data.get("lorryParkingFeatureIcons"),
             geometry=detail_data.get("geometry")["coordinates"],
-        )
+        ))
 
 
     def process_roadworks(self, road, detail_data):
@@ -176,7 +196,7 @@ class Command(BaseCommand):
                 title_parts = title_parts[idx:]
                 break
 
-        Roadwork.objects.create(
+        self.items["roadworks"].append(Roadwork(
             road=road,
             isBlocked=detail_data.get("isBlocked"),
             future=detail_data.get("future"),
@@ -193,4 +213,4 @@ class Command(BaseCommand):
             footer=detail_data.get("footer"),
             lorryParkingFeatureIcons=detail_data.get("lorryParkingFeatureIcons"),
             geometry=detail_data.get("geometry")["coordinates"],
-        )
+        ))

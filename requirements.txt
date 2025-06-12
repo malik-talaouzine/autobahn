@@ -3,3 +3,6 @@ mysqlclient
 requests
 django-leaflet
 tqdm
+celery
+redis
+django-celery-beat

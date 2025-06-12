@@ -2,3 +2,6 @@
 .env
 *.ipynb
 .pyc
+*__pycache__/
+*.pid
+*.log
