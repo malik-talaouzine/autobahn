@@ -146,8 +146,8 @@ CELERY_BEAT_SCHEDULE_FILENAME = "/tmp/celerybeat-schedule"
 CELERY_BROKER_URL = 'redis://redis:6379/0'
 
 CELERY_BEAT_SCHEDULE = {
-    'run-fetcher-every-1-hour': {
+    'run-fetcher-daily': {
         'task': 'stations.tasks.run_fetcher',
-        'schedule': 3600.0,  # every hour
+        'schedule': 86400.0,  # run daily
     },
 }

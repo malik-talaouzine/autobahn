@@ -5,7 +5,7 @@ FROM python:3.12
 RUN apt-get update
 
 RUN apt-get update &&\
-    apt-get install -y gdal-bin supervisor
+    apt-get install -y gdal-bin default-mysql-client
  
 # Create the app directory
 RUN mkdir /app
@@ -33,6 +33,13 @@ COPY . /app/
  
 # Expose the Django port
 EXPOSE 8000
+
+# Copy entrypoint and make it executable
+COPY entrypoint.sh /app/entrypoint.sh
+RUN chmod +x /app/entrypoint.sh
+
+# Set the entrypoint
+ENTRYPOINT ["/app/entrypoint.sh"]
  
 # Run Django’s development server
-CMD ["supervisord", "-c", "/app/supervisord.conf"]
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
