@@ -8,7 +8,7 @@ if [ "$(hostname)" != "django-container" ]; then
   exit 0
 fi
 
-REQUIRED_VARS=("DB" "USER" "PASSWORD" "ROOTPW" "PORT" "HOST")
+REQUIRED_VARS=("DB" "DB_USER" "PASSWORD" "HOST")
 
 # echo "🔍 Checking required environment variables..."
 for VAR in "${REQUIRED_VARS[@]}"; do
@@ -20,7 +20,7 @@ done
 # echo "✅ All required environment variables are set."
 
 # echo "🔄 Waiting for MySQL to be ready at $HOST:$PORT..."
-until mysql -h "$HOST" -P "$PORT" -u "$USER" -p"$ROOTPW" -D "$DB" -e "SELECT 1;" &> /dev/null; do
+until mysql -h "$HOST" -P "$PORT" -u "root" -p"$ROOTPW" -D "$DB" -e "SELECT 1;" &> /dev/null; do
   sleep 1
 done
 # echo "✅ MySQL is ready."

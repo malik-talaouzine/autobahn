@@ -32,14 +32,21 @@ cd autobahn
 
 ```
 
-### 2. Create a .env file
+### 2. Create your own .env file
+```bash
+DB=<your-db-name>
+USER=<your-username>
+PASSWORD=<your-password>
+HOST=<your-hostname>
+PORT=3306
+```
+or just copy this example:
 ```bash
 DB=db
-USER=root
-PASSWORD=<your-password>
-ROOTPW=<your-root-password>
-PORT=3306
+USER=test
+PASSWORD=password
 HOST=mysql-container
+PORT=3306
 ```
 
 ### 3. Start the App
